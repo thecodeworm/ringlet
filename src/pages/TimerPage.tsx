@@ -156,7 +156,6 @@ export function TimerPage() {
             variant="ghost"
             size="sm"
             onClick={() => void restart()}
-            disabled={timer.status === "idle" && timer.remainingMs === timer.durationMs}
             className="absolute right-3 bottom-3"
           >
             <RefreshCw /> Restart session

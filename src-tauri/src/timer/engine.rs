@@ -400,6 +400,16 @@ mod tests {
     }
 
     #[test]
+    fn restart_from_idle_starts_running_at_full_duration() {
+        let mut e = Engine::new(&d());
+        assert_eq!(e.status, Status::Idle);
+        e.restart(&d(), 10);
+        assert_eq!(e.status, Status::Running);
+        assert_eq!(e.remaining_ms(), 25 * MIN);
+        assert_eq!(e.started_at, Some(10));
+    }
+
+    #[test]
     fn recover_running_before_deadline() {
         let mut e = Engine::new(&d());
         e.start(0);

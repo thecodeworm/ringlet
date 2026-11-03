@@ -158,6 +158,15 @@ impl Engine {
         self.start(now_wall);
     }
 
+    /// Abandons the whole cycle: back to an idle, full-length focus session
+    /// with no focus sessions counted towards the next long break. Like
+    /// [`Engine::reset`], the abandoned session is never recorded, and nothing
+    /// already recorded is touched.
+    pub fn start_over(&mut self, d: &Durations) {
+        self.completed_in_cycle = 0;
+        self.begin(Phase::Focus, d);
+    }
+
     /// Moves to a specific phase without recording anything.
     pub fn set_phase(&mut self, phase: Phase, d: &Durations) {
         if phase == Phase::Focus && self.phase == Phase::LongBreak {
@@ -407,6 +416,56 @@ mod tests {
         assert_eq!(e.status, Status::Running);
         assert_eq!(e.remaining_ms(), 25 * MIN);
         assert_eq!(e.started_at, Some(10));
+    }
+
+    #[test]
+    fn start_over_from_running_focus_clears_cycle() {
+        let mut e = Engine::new(&d());
+        for _ in 0..2 {
+            e.start(0);
+            e.advance(e.duration_ms, &d()).unwrap(); // focus
+            e.start(0);
+            e.advance(e.duration_ms, &d()).unwrap(); // short break
+        }
+        assert_eq!(e.completed_in_cycle, 2);
+        e.start(50);
+        e.advance(4 * MIN, &d());
+        let id = e.session_id;
+        e.start_over(&d());
+        assert_eq!(e.phase, Phase::Focus);
+        assert_eq!(e.status, Status::Idle);
+        assert_eq!(e.completed_in_cycle, 0);
+        assert_eq!(e.remaining_ms(), 25 * MIN);
+        assert_eq!(e.started_at, None);
+        // The abandoned session id is retired and nothing can complete it.
+        assert_ne!(e.session_id, id);
+        assert!(e.advance(30 * MIN, &d()).is_none());
+    }
+
+    #[test]
+    fn start_over_from_break_and_long_break_returns_to_focus() {
+        let mut e = Engine::new(&d());
+        e.set_phase(Phase::ShortBreak, &d());
+        e.completed_in_cycle = 3;
+        e.start(0);
+        e.start_over(&d());
+        assert_eq!((e.phase, e.status, e.completed_in_cycle), (Phase::Focus, Status::Idle, 0));
+        assert_eq!(e.remaining_ms(), 25 * MIN);
+
+        e.set_phase(Phase::LongBreak, &d());
+        e.completed_in_cycle = 4;
+        e.start_over(&d());
+        assert_eq!((e.phase, e.status, e.completed_in_cycle), (Phase::Focus, Status::Idle, 0));
+    }
+
+    #[test]
+    fn start_over_picks_up_current_durations() {
+        let mut e = Engine::new(&d());
+        e.start(0);
+        let longer = Durations::from_minutes(50, 10, 20, 4);
+        e.start_over(&longer);
+        assert_eq!(e.duration_ms, 50 * MIN);
+        assert_eq!(e.remaining_ms(), 50 * MIN);
     }
 
     #[test]

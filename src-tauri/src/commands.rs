@@ -89,6 +89,17 @@ pub fn timer_restart(state: State<AppState>) -> TimerSnapshot {
     })
 }
 
+/// Starts the whole pomodoro flow over: focus phase, cycle counter at zero,
+/// timer idle at the full focus length. Recorded history is not touched and
+/// the selected task is kept.
+#[tauri::command]
+pub fn timer_start_over(state: State<AppState>) -> TimerSnapshot {
+    state.timer().command(|e, d, _| {
+        e.start_over(d);
+        true
+    })
+}
+
 pub fn skip_with_autostart(app: &AppHandle, s: &Settings) -> TimerSnapshot {
     let state = app.state::<AppState>();
     let mut next = Phase::Focus;

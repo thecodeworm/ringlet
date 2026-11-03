@@ -131,7 +131,7 @@ export function TimerPage() {
     <div className="flex min-h-0 flex-1 flex-col">
       <PageHeader title="Timer" subtitle={subtitle} />
       <div className="page-scroll scroll-area flex min-h-0 flex-1 gap-6 px-8 pb-8">
-        <Card className="relative flex min-w-0 flex-1 flex-col items-center justify-center gap-6 py-8">
+        <Card className="flex min-h-max min-w-0 flex-1 flex-col items-center justify-center gap-6 px-6 py-8">
           <PhaseTabs timer={timer} />
           <div className="relative">
             <ProgressRing
@@ -152,14 +152,11 @@ export function TimerPage() {
             <CompletionBadge show={!!completion} label={completion?.phase === "focus" ? "Focus complete" : "Break over"} size={56} />
           </div>
           <TimerControls timer={timer} size="lg" />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => void restart()}
-            className="absolute right-3 bottom-3"
-          >
-            <RefreshCw /> Restart session
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="sm" onClick={() => void restart()}>
+              <RefreshCw /> Restart session
+            </Button>
+          </div>
         </Card>
         <div className="flex w-[244px] shrink-0 flex-col gap-4">
           <TaskCard />

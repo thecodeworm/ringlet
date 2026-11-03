@@ -28,6 +28,7 @@ export const api = {
     pause: () => invoke<TimerSnapshot>("timer_pause"),
     reset: () => invoke<TimerSnapshot>("timer_reset"),
     restart: () => invoke<TimerSnapshot>("timer_restart"),
+    startOver: () => invoke<TimerSnapshot>("timer_start_over"),
     skip: () => invoke<TimerSnapshot>("timer_skip"),
     setPhase: (phase: Phase) => invoke<TimerSnapshot>("timer_set_phase", { phase }),
     setTask: (taskId: number | null) => invoke<TimerSnapshot>("timer_set_task", { taskId }),

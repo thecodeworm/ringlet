@@ -19,6 +19,7 @@ export function useTimerActions() {
       toggle: () => run(api.timer.toggle()),
       reset: () => run(api.timer.reset()),
       restart: () => run(api.timer.restart()),
+      startOver: () => run(api.timer.startOver()),
       skip: () => run(api.timer.skip()),
       setPhase: (p: Phase) => run(api.timer.setPhase(p)),
       setTask: (id: number | null) => run(api.timer.setTask(id)),

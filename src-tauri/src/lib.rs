@@ -216,6 +216,7 @@ pub fn run() {
             commands::timer_pause,
             commands::timer_reset,
             commands::timer_restart,
+            commands::timer_start_over,
             commands::timer_skip,
             commands::timer_set_phase,
             commands::timer_set_task,

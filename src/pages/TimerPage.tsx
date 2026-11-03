@@ -16,6 +16,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { ProgressRing } from "@/components/timer/ProgressRing";
 import { TimerControls } from "@/components/timer/TimerControls";
 import { SessionDots } from "@/components/timer/SessionDots";
+import { StartOverButton } from "@/components/timer/StartOverButton";
 import { PhaseTabs } from "@/components/timer/PhaseTabs";
 import { CompletionBadge } from "@/components/timer/CompletionBadge";
 import { Card } from "@/components/ui/section";
@@ -156,6 +157,7 @@ export function TimerPage() {
             <Button variant="ghost" size="sm" onClick={() => void restart()}>
               <RefreshCw /> Restart session
             </Button>
+            <StartOverButton />
           </div>
         </Card>
         <div className="flex w-[244px] shrink-0 flex-col gap-4">

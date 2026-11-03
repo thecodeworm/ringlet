@@ -131,7 +131,7 @@ export function TimerPage() {
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <PageHeader title="Timer" subtitle={subtitle} />
-      <div className="page-scroll scroll-area flex min-h-0 flex-1 gap-6 px-8 pb-8">
+      <div className="page-scroll scroll-area flex min-h-0 flex-1 gap-6 px-8 pb-8 max-[880px]:flex-col">
         <Card className="flex min-h-max min-w-0 flex-1 flex-col items-center justify-center gap-6 px-6 py-8">
           <PhaseTabs timer={timer} />
           <div className="relative">
@@ -160,7 +160,7 @@ export function TimerPage() {
             <StartOverButton />
           </div>
         </Card>
-        <div className="flex w-[244px] shrink-0 flex-col gap-4">
+        <div className="flex w-[244px] shrink-0 flex-col gap-4 max-[880px]:w-full">
           <TaskCard />
           <PresetCard />
           <p className="px-1 text-[11.5px] leading-relaxed text-fg-3">
